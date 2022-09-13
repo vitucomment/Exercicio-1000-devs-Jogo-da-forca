@@ -53,25 +53,6 @@ public class mainJogoForca {
 		input.close();
 	}
 
-	private static String geraPalavra(int escolha) throws FileNotFoundException {
-		Scanner input = null;
-		if (escolha == 1) {
-			input = new Scanner(new FileReader("palavrasFaceis.txt"));
-		} else if (escolha == 2) {
-			input = new Scanner(new FileReader("palavrasMedias.txt"));
-		} else if (escolha == 3) {
-			input = new Scanner(new FileReader("palavrasDificeis.txt"));
-		}
-		ArrayList<String> palavras = new ArrayList<>();
-		while (input.hasNextLine()) {
-			String line = input.nextLine();
-			palavras.add(line);
-		}
-		Random rdm = new Random();
-		String palavra = palavras.get(rdm.nextInt(palavras.size()));
-		return palavra;
-	}
-
 	private static Scanner input() {
 		Scanner input = new Scanner(System.in);
 		return input;
@@ -87,52 +68,6 @@ public class mainJogoForca {
 			chute = input.next().charAt(0);
 		}
 		return chute;
-	}
-
-	private static char[] geraListaDaPalavra(String palavraQueVaiSerConvertida) {
-		String palavra = palavraQueVaiSerConvertida.toLowerCase();
-		char[] listaLetras = new char[palavra.length()];
-		for (int i = 0; i < palavra.length(); i++) {
-			listaLetras[i] = palavra.charAt(i);
-		}
-		return listaLetras;
-	}
-
-	private static char[] ocultaPalavras(char[] listaPalavras) {
-		for (int i = 0; i < listaPalavras.length; i++) {
-			listaPalavras[i] = '•';
-		}
-		return listaPalavras;
-	}
-
-	private static boolean conferePalavra(String palavra, char[] listaPalavra, char[] palavraOcultada) {
-		System.out.print("Palavra a ser descoberta: ");
-		System.out.println(palavraOcultada);
-		char letraDigitada = pedeChute();
-		boolean retorno = false;
-		for (int i = 0; i < palavra.length(); i++) {
-			if (listaPalavra[i] == letraDigitada) {
-				palavraOcultada[i] = letraDigitada;
-				retorno = acertou(1);
-			}
-		}
-		if (retorno == true)
-			return true;
-		else
-			return acertou(0);
-	}
-
-	private static void escolhasDeDificuldade() {
-		System.out.println("\t[1] --> Fácil");
-		System.out.println("\t[2] --> Médio");
-		System.out.println("\t[3] --> Difícil");
-		System.out.print("Escolha: ");
-	}
-
-	private static void ImprimeMenu() {
-		System.out.println("========== Bem vindo ao jogo da forca ==========\n");
-		System.out.println("Escolha a dificuldade do jogo:");
-		escolhasDeDificuldade();
 	}
 
 	private static int pegaEscolha() {
@@ -152,22 +87,12 @@ public class mainJogoForca {
 		}
 	}
 
-	private static int dificuldade(int escolha, String palavra) {
-		double multiplicador = 0.6;
-		switch (escolha) {
-		case 1:
-			multiplicador = 1.0;
-			break;
-		case 2:
-			multiplicador = 0.9;
-			break;
-		case 3:
-			multiplicador = 0.8;
-			break;
-		}
-		return (int) (palavra.length() * multiplicador);
+	private static void ImprimeMenu() {
+		System.out.println("========== Bem vindo ao jogo da forca ==========\n");
+		System.out.println("Escolha a dificuldade do jogo:");
+		escolhasDeDificuldade();
 	}
-
+	
 	private static boolean acertou(int valor) {
 		if (valor != 0)
 			return true;
@@ -175,12 +100,11 @@ public class mainJogoForca {
 			return false;
 	}
 
-	private static boolean confereVitoria(char[] palavraOcultada) {
-		for (int i = 0; i < palavraOcultada.length; i++) {
-			if (palavraOcultada[i] == '•')
-				return false;
-		}
-		return true;
+	private static void escolhasDeDificuldade() {
+		System.out.println("\t[1] --> Fácil");
+		System.out.println("\t[2] --> Médio");
+		System.out.println("\t[3] --> Difícil");
+		System.out.print("Escolha: ");
 	}
 
 	private static void imprimeMensagemVencedor() {
@@ -217,4 +141,79 @@ public class mainJogoForca {
 		System.out.println("       \\_______/           ");
 	}
 
+	private static char[] ocultaPalavras(char[] listaPalavras) {
+		for (int i = 0; i < listaPalavras.length; i++) {
+			listaPalavras[i] = '•';
+		}
+		return listaPalavras;
+	}
+
+	private static int dificuldade(int escolha, String palavra) {
+		double multiplicador = 0.6;
+		switch (escolha) {
+		case 1:
+			multiplicador = 1.0;
+			break;
+		case 2:
+			multiplicador = 0.9;
+			break;
+		case 3:
+			multiplicador = 0.7;
+			break;
+		}
+		return (int) (palavra.length() * multiplicador);
+	}
+
+	private static boolean confereVitoria(char[] palavraOcultada) {
+		for (int i = 0; i < palavraOcultada.length; i++) {
+			if (palavraOcultada[i] == '•')
+				return false;
+		}
+		return true;
+	}
+
+	private static String geraPalavra(int escolha) throws FileNotFoundException {
+		Scanner input = null;
+		if (escolha == 1) {
+			input = new Scanner(new FileReader("palavrasFaceis.txt"));
+		} else if (escolha == 2) {
+			input = new Scanner(new FileReader("palavrasMedias.txt"));
+		} else if (escolha == 3) {
+			input = new Scanner(new FileReader("palavrasDificeis.txt"));
+		}
+		ArrayList<String> palavras = new ArrayList<>();
+		while (input.hasNextLine()) {
+			String line = input.nextLine();
+			palavras.add(line);
+		}
+		Random rdm = new Random();
+		String palavra = palavras.get(rdm.nextInt(palavras.size()));
+		return palavra;
+	}
+
+	private static char[] geraListaDaPalavra(String palavraQueVaiSerConvertida) {
+		String palavra = palavraQueVaiSerConvertida.toLowerCase();
+		char[] listaLetras = new char[palavra.length()];
+		for (int i = 0; i < palavra.length(); i++) {
+			listaLetras[i] = palavra.charAt(i);
+		}
+		return listaLetras;
+	}
+
+	private static boolean conferePalavra(String palavra, char[] listaPalavra, char[] palavraOcultada) {
+		System.out.print("Palavra a ser descoberta: ");
+		System.out.println(palavraOcultada);
+		char letraDigitada = pedeChute();
+		boolean retorno = false;
+		for (int i = 0; i < palavra.length(); i++) {
+			if (listaPalavra[i] == letraDigitada) {
+				palavraOcultada[i] = letraDigitada;
+				retorno = acertou(1);
+			}
+		}
+		if (retorno == true)
+			return true;
+		else
+			return acertou(0);
+	}
 }
