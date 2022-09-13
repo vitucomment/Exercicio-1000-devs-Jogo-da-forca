@@ -23,8 +23,9 @@ public class mainJogoForca {
 			char[] listaPalavra = geraListaDaPalavra(palavra);
 			char[] palavraOcultada = ocultaPalavras(listaPalavra.clone());
 			int contador = dificuldade;
-			System.out.println("__________O JOGO VAI COMEÇAR__________");
+			System.out.println("__________O JOGO VAI COMEÇAR__________\n");
 			while (contador >= 0) {
+				System.out.println("Tentativas restantes: " + contador);
 				if (conferePalavra(palavra, listaPalavra, palavraOcultada) == true)
 					;
 				else
@@ -80,6 +81,7 @@ public class mainJogoForca {
 		Scanner input = input();
 		System.out.print("Digite uma letra: ");
 		char chute = input.next().charAt(0);
+		System.out.println("");
 		while (Character.isDigit(chute)) {
 			System.out.print("Você digitou um número! Digite apenas uma letra: ");
 			chute = input.next().charAt(0);
@@ -154,13 +156,13 @@ public class mainJogoForca {
 		double multiplicador = 0.6;
 		switch (escolha) {
 		case 1:
-			multiplicador = 0.8;
+			multiplicador = 1.0;
 			break;
 		case 2:
-			multiplicador = 0.7;
+			multiplicador = 0.9;
 			break;
 		case 3:
-			multiplicador = 0.6;
+			multiplicador = 0.8;
 			break;
 		}
 		return (int) (palavra.length() * multiplicador);
